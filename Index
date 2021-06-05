@@ -112,6 +112,7 @@
     });
 
   </script>
+   <a class="trigger_popup_fricc">Archive</a>
 <div class="hover_bkgr_fricc">
     <span class="helper"></span>
     <iframe src="https://www.codeavengers.com/c/2021gc0132/archive.html" height="800" width="1500"></iframe>

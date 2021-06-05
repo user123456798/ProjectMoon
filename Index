@@ -9,5 +9,5 @@ body {
   width: 100vw;
 }
 </style>
-<h1>ProjectMoon LaunchPad</p>
+<icon> src="projectmoon logo.png" </icon> <h1>ProjectMoon LaunchPad</p>
 </html>

@@ -37,12 +37,84 @@
 <div class="wrap">
 <h1><img src="ProjectMoon Logo.png" height="50" width="50"> ProjectMoon LaunchPad</h1>
 <p>The LaunchPad For ProjectMoon</p>
-<script>
-$("#open").on('click', function() {
-$("#iframe-box").append("<iframe src='https://lyricfy.herokuapp.com'></iframe>")})
-window.addEventListener("message", function receiveMessage(event){console.log(event.data)}, false); 
-</script>
-<button id="open">Launch ProjectMoon</button>
-<div id="iframe-box"></div>
+<style>
+    /* Popup box BEGIN */
+    .hover_bkgr_fricc{
+      background:rgba(0,0,0,.4);
+      cursor:pointer;
+      display:none;
+      height:100%;
+      position:fixed;
+      text-align:center;
+      top:0;
+      width:100%;
+      z-index:10000;
+    }
+    .hover_bkgr_fricc .helper{
+      display:inline-block;
+      height:100%;
+      vertical-align:middle;
+    }
+    .hover_bkgr_fricc > div {
+      background-color: #black;
+
+      display: inline-block;
+      height: auto;
+      max-width: 551px;
+      min-height: 100px;
+      vertical-align: middle;
+      width: 60%;
+      position: relative;
+      border-radius: 8px;
+      padding: 15px 5%;
+    }
+    .popupCloseButton {
+      background-color: #white;
+      border: 3px solid #999;
+      border-radius: 50px;
+      cursor: pointer;
+      display: inline-block;
+      font-family: arial;
+      font-weight: bold;
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      font-size: 25px;
+      line-height: 30px;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+    }
+    .popupCloseButton:hover {
+      background-color: #none;
+    }
+    .trigger_popup_fricc {
+      cursor: pointer;
+      font-size: 20px;
+      margin: 20px;
+      display: inline-block;
+      font-weight: bold;
+    }
+    /* Popup box BEGIN */
+
+  </style>
+  <script>
+    $(window).load(function () {
+      $(".trigger_popup_fricc").click(function(){
+        $('.hover_bkgr_fricc').show();
+      });
+      $('.hover_bkgr_fricc').click(function(){
+        $('.hover_bkgr_fricc').hide();
+      });
+      $('.popupCloseButton').click(function(){
+        $('.hover_bkgr_fricc').hide();
+      });
+    });
+
+  </script>
+<div class="hover_bkgr_fricc">
+    <span class="helper"></span>
+    <iframe src="https://www.codeavengers.com/c/2021gc0132/archive.html" height="800" width="1500"></iframe>
+  </div>
 </div>
 </html>

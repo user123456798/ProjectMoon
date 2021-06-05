@@ -35,7 +35,33 @@
 }
 </style>
 <div class="wrap">
-<h1 font: 30px ><img src="ProjectMoon Logo.png" height="50" width="50"> ProjectMoon LaunchPad</h1>
+<h1><img src="ProjectMoon Logo.png" height="50" width="50"> ProjectMoon LaunchPad</h1>
 <p>The LaunchPad For ProjectMoon</p>
+<script>
+$(function() {
+  
+// Dropdown toggle
+$('.dropdown-toggle').click(function(){
+  $(this).next('.dropdown').toggle();
+});
+
+$(document).click(function(e) {
+  var target = e.target;
+  if (!$(target).is('.dropdown-toggle') && !$(target).parents().is('.dropdown-toggle')) {
+    $('.dropdown').hide();
+  }
+});
+
+});
+</script>
+<nav>
+<a class="dropdown-toggle" href="#" title="Menu">Menu</a>
+<ul class="dropdown">
+  <li><a href="#">Menu Item</a></li>
+  <li><a href="#">Menu</a></li>
+  <li><a href="#">Settings</a></li>
+  <li><a href="#">Search</a></li>
+</ul>
+</nav>
 </div>
 </html>

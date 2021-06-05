@@ -35,8 +35,7 @@
 }
 </style>
 <div class="wrap">
-<div>
-<img src="ProjectMoon Logo.png" height="50" width="50"> <h1>ProjectMoon LaunchPad</h1>
+<img src="ProjectMoon Logo.png" height="50" width="50"><h2>ProjectMoon LaunchPad</h2>
 <p>The LaunchPad For ProjectMoon</p>
 </div>
 </html>

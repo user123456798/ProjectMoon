@@ -38,58 +38,11 @@
 <h1><img src="ProjectMoon Logo.png" height="50" width="50"> ProjectMoon LaunchPad</h1>
 <p>The LaunchPad For ProjectMoon</p>
 <script>
-$(function() {
-  
-// Dropdown toggle
-$('.dropdown-toggle').click(function(){
-  $(this).next('.dropdown').toggle();
-});
-
-$(document).click(function(e) {
-  var target = e.target;
-  if (!$(target).is('.dropdown-toggle') && !$(target).parents().is('.dropdown-toggle')) {
-    $('.dropdown').hide();
-  }
-});
-
-});
+$("#open").on('click', function() {
+$("#iframe-box").append("<iframe src='https://lyricfy.herokuapp.com'></iframe>")})
+window.addEventListener("message", function receiveMessage(event){console.log(event.data)}, false); 
 </script>
-<style>
-nav {
-  position: relative;
-}
-.dropdown-toggle {
-  padding: .5em 1em;
-  background: #777;
-  border-radius: .2em .2em 0 0;
-}
-ul.dropdown {
-  display:none;
-  position: absolute;
-  top: 100%;
-  margin-top: .5em;
-  background: #777;
-  min-width: 12em;
-  padding: 0;
-  border-radius: 0 0 .2em .2em;
-    li {
-      list-style-type: none;
-      a {
-        text-decoration: none;
-        padding: .5em 1em;
-        display: block;
-      }
-   }
-}
-</style>
-<nav>
-<a class="dropdown-toggle" href="#" title="Menu">Menu</a>
-<ul class="dropdown">
-  <li><a href="#">Menu Item</a></li>
-  <li><a href="#">Menu</a></li>
-  <li><a href="#">Settings</a></li>
-  <li><a href="#">Search</a></li>
-</ul>
-</nav>
+<button id="open">Launch ProjectMoon</button>
+<div id="iframe-box"></div>
 </div>
 </html>

@@ -1,0 +1,442 @@
+<!doctype html>
+<title>code_writer</title>
+<link rel="icon" href="https://i.ibb.co/X2W6QYN/Project-LOGO.png">
+<style>
+  body {
+    align-content: center;
+    align-items: center;
+  }
+</style>
+<body onload="initDoc();">
+  <h3>Brought To You By <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Editable_content#Differences_in_markup_generation" target="_blank">https://developer.mozilla.org/.../Editable_content</a> And Edited For Project moon.</h3>
+  <form name="compForm" method="post" action="sample.php" onsubmit="if(validateMode()){this.myDoc.value=oDoc.innerHTML;return true;}return false;">
+    <input type="hidden" name="myDoc">
+    <div id="toolBar1">
+      <select onchange="formatDoc('formatblock',this[this.selectedIndex].value);this.selectedIndex=0;">
+        <option selected>- formatting -</option>
+        <option value="h1">Title 1 &lt;h1&gt;</option>
+        <option value="h2">Title 2 &lt;h2&gt;</option>
+        <option value="h3">Title 3 &lt;h3&gt;</option>
+        <option value="h4">Title 4 &lt;h4&gt;</option>
+        <option value="h5">Title 5 &lt;h5&gt;</option>
+        <option value="h6">Subtitle &lt;h6&gt;</option>
+        <option value="p">Paragraph &lt;p&gt;</option>
+        <option value="pre">Preformatted &lt;pre&gt;</option>
+      </select>
+      <select onchange="formatDoc('fontname',this[this.selectedIndex].value);this.selectedIndex=0;">
+        <option class="heading" selected>- font -</option>
+        <option>Arial</option>
+        <option>Arial Black</option>
+        <option>Courier New</option>
+        <option>Times New Roman</option>
+      </select>
+      <select onchange="formatDoc('fontsize',this[this.selectedIndex].value);this.selectedIndex=0;">
+        <option class="heading" selected>- size -</option>
+        <option value="1">Very small</option>
+        <option value="2">A bit small</option>
+        <option value="3">Normal</option>
+        <option value="4">Medium-large</option>
+        <option value="5">Big</option>
+        <option value="6">Very big</option>
+        <option value="7">Maximum</option>
+      </select>
+      <select onchange="formatDoc('forecolor',this[this.selectedIndex].value);this.selectedIndex=0;">
+        <option class="heading" selected>- color -</option>
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+        <option value="green">Green</option>
+        <option value="black">Black</option>
+      </select>
+      <select onchange="formatDoc('backcolor',this[this.selectedIndex].value);this.selectedIndex=0;">
+        <option class="heading" selected>- background -</option>
+        <option value="red">Red</option>
+        <option value="green">Green</option>
+        <option value="black">Black</option>
+      </select>
+    </div>
+    <div id="toolBar2">
+      <img class="intLink" title="Clean" onclick="if(validateMode()&&confirm('Are you sure?')){oDoc.innerHTML=sDefTxt};" src="data:image/gif;base64,R0lGODlhFgAWAIQbAD04KTRLYzFRjlldZl9vj1dusY14WYODhpWIbbSVFY6O7IOXw5qbms+wUbCztca0ccS4kdDQjdTLtMrL1O3YitHa7OPcsd/f4PfvrvDv8Pv5xv///////////////////yH5BAEKAB8ALAAAAAAWABYAAAV84CeOZGmeaKqubMteyzK547QoBcFWTm/jgsHq4rhMLoxFIehQQSAWR+Z4IAyaJ0kEgtFoLIzLwRE4oCQWrxoTOTAIhMCZ0tVgMBQKZHAYyFEWEV14eQ8IflhnEHmFDQkAiSkQCI2PDC4QBg+OAJc0ewadNCOgo6anqKkoIQA7" />
+      <img class="intLink" title="Print" onclick="printDoc();" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAABGdBTUEAALGPC/xhBQAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9oEBxcZFmGboiwAAAAIdEVYdENvbW1lbnQA9syWvwAAAuFJREFUOMvtlUtsjFEUx//n3nn0YdpBh1abRpt4LFqtqkc3jRKkNEIsiIRIBBEhJJpKlIVo4m1RRMKKjQiRMJRUqUdKPT71qpIpiRKPaqdF55tv5vvusZjQTjOlseUkd3Xu/3dPzusC/22wtu2wRn+jG5So/OCDh8ycMJDflehMlkJkVK7KUYN+ufzA/RttH76zaVocDptRxzQtNi3mRWuPc+6cKtlXZ/sddP2uu9uXlmYXZ6Qm8v4Tz8lhF1H+zDQXt7S8oLMXtbF4e8QaFHjj3kbP2MzkktHpiTjp9VH6iHiA+whtAsX5brpwueMGdONdf/2A4M7ukDs1JW662+XkqTkeUoqjKtOjm2h53YFL15pSJ04Zc94wdtibr26fXlC2mzRvBccEbz2kiRFD414tKMlEZbVGT33+qCoHgha81SWYsew0r1uzfNylmtpx80pngQQ91LwVk2JGvGnfvZG6YcYRAT16GFtW5kKKfo1EQLtfh5Q2etT0BIWF+aitq4fDbk+ImYo1OxvGF03waFJQvBCkvDffRyEtxQiFFYgAZTHS0zwAGD7fG5TNnYNTp8/FzvGwJOfmgG7GOx0SAKKgQgDMgKBI0NJGMEImpGDk5+WACEwEd0ywblhGUZ4Hw5OdUekRBLT7DTgdEgxACsIznx8zpmWh7k4rkpJcuHDxCul6MDsmmBXDlWCH2+XozSgBnzsNCEE4euYV4pwCpsWYPW0UHDYBKSWu1NYjENDReqtKjwn2+zvtTc1vMSTB/mvev/WEYSlASsLimcOhOBJxw+N3aP/SjefNL5GePZmpu4kG7OPr1+tOfPyUu3BecWYKcwQcDFmwFKAUo90fhKDInBCAmvqnyMgqUEagQwCoHBDc1rjv9pIlD8IbVkz6qYViIBQGTJPx4k0XpIgEZoRN1Da0cij4VfR0ta3WvBXH/rjdCufv6R2zPgPH/e4pxSBCpeatqPrjNiso203/5s/zA171Mv8+w1LOAAAAAElFTkSuQmCC">
+      <img class="intLink" title="Undo" onclick="formatDoc('undo');" src="data:image/gif;base64,R0lGODlhFgAWAOMKADljwliE33mOrpGjuYKl8aezxqPD+7/I19DV3NHa7P///////////////////////yH5BAEKAA8ALAAAAAAWABYAAARR8MlJq7046807TkaYeJJBnES4EeUJvIGapWYAC0CsocQ7SDlWJkAkCA6ToMYWIARGQF3mRQVIEjkkSVLIbSfEwhdRIH4fh/DZMICe3/C4nBQBADs=" />
+      <img class="intLink" title="Redo" onclick="formatDoc('redo');" src="data:image/gif;base64,R0lGODlhFgAWAMIHAB1ChDljwl9vj1iE34Kl8aPD+7/I1////yH5BAEKAAcALAAAAAAWABYAAANKeLrc/jDKSesyphi7SiEgsVXZEATDICqBVJjpqWZt9NaEDNbQK1wCQsxlYnxMAImhyDoFAElJasRRvAZVRqqQXUy7Cgx4TC6bswkAOw==" />
+      <img class="intLink" title="Remove formatting" onclick="formatDoc('removeFormat')" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAABGdBTUEAALGPC/xhBQAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAAd0SU1FB9oECQMCKPI8CIIAAAAIdEVYdENvbW1lbnQA9syWvwAAAuhJREFUOMtjYBgFxAB501ZWBvVaL2nHnlmk6mXCJbF69zU+Hz/9fB5O1lx+bg45qhl8/fYr5it3XrP/YWTUvvvk3VeqGXz70TvbJy8+Wv39+2/Hz19/mGwjZzuTYjALuoBv9jImaXHeyD3H7kU8fPj2ICML8z92dlbtMzdeiG3fco7J08foH1kurkm3E9iw54YvKwuTuom+LPt/BgbWf3//sf37/1/c02cCG1lB8f//f95DZx74MTMzshhoSm6szrQ/a6Ir/Z2RkfEjBxuLYFpDiDi6Af///2ckaHBp7+7wmavP5n76+P2ClrLIYl8H9W36auJCbCxM4szMTJac7Kza////R3H1w2cfWAgafPbqs5g7D95++/P1B4+ECK8tAwMDw/1H7159+/7r7ZcvPz4fOHbzEwMDwx8GBgaGnNatfHZx8zqrJ+4VJBh5CQEGOySEua/v3n7hXmqI8WUGBgYGL3vVG7fuPK3i5GD9/fja7ZsMDAzMG/Ze52mZeSj4yu1XEq/ff7W5dvfVAS1lsXc4Db7z8C3r8p7Qjf///2dnZGxlqJuyr3rPqQd/Hhyu7oSpYWScylDQsd3kzvnH738wMDzj5GBN1VIWW4c3KDon7VOvm7S3paB9u5qsU5/x5KUnlY+eexQbkLNsErK61+++VnAJcfkyMTIwffj0QwZbJDKjcETs1Y8evyd48toz8y/ffzv//vPP4veffxpX77z6l5JewHPu8MqTDAwMDLzyrjb/mZm0JcT5Lj+89+Ybm6zz95oMh7s4XbygN3Sluq4Mj5K8iKMgP4f0////fv77//8nLy+7MCcXmyYDAwODS9jM9tcvPypd35pne3ljdjvj26+H2dhYpuENikgfvQeXNmSl3tqepxXsqhXPyc666s+fv1fMdKR3TK72zpix8nTc7bdfhfkEeVbC9KhbK/9iYWHiErbu6MWbY/7//8/4//9/pgOnH6jGVazvFDRtq2VgiBIZrUTIBgCk+ivHvuEKwAAAAABJRU5ErkJggg==">
+      <img class="intLink" title="Bold" onclick="formatDoc('bold');" src="data:image/gif;base64,R0lGODlhFgAWAID/AMDAwAAAACH5BAEAAAAALAAAAAAWABYAQAInhI+pa+H9mJy0LhdgtrxzDG5WGFVk6aXqyk6Y9kXvKKNuLbb6zgMFADs=" />
+      <img class="intLink" title="Italic" onclick="formatDoc('italic');" src="data:image/gif;base64,R0lGODlhFgAWAKEDAAAAAF9vj5WIbf///yH5BAEAAAMALAAAAAAWABYAAAIjnI+py+0Po5x0gXvruEKHrF2BB1YiCWgbMFIYpsbyTNd2UwAAOw==" />
+      <img class="intLink" title="Underline" onclick="formatDoc('underline');" src="data:image/gif;base64,R0lGODlhFgAWAKECAAAAAF9vj////////yH5BAEAAAIALAAAAAAWABYAAAIrlI+py+0Po5zUgAsEzvEeL4Ea15EiJJ5PSqJmuwKBEKgxVuXWtun+DwxCCgA7" />
+      <img class="intLink" title="Left align" onclick="formatDoc('justifyleft');" src="data:image/gif;base64,R0lGODlhFgAWAID/AMDAwAAAACH5BAEAAAAALAAAAAAWABYAQAIghI+py+0Po5y02ouz3jL4D4JMGELkGYxo+qzl4nKyXAAAOw==" />
+      <img class="intLink" title="Center align" onclick="formatDoc('justifycenter');" src="data:image/gif;base64,R0lGODlhFgAWAID/AMDAwAAAACH5BAEAAAAALAAAAAAWABYAQAIfhI+py+0Po5y02ouz3jL4D4JOGI7kaZ5Bqn4sycVbAQA7" />
+      <img class="intLink" title="Right align" onclick="formatDoc('justifyright');" src="data:image/gif;base64,R0lGODlhFgAWAID/AMDAwAAAACH5BAEAAAAALAAAAAAWABYAQAIghI+py+0Po5y02ouz3jL4D4JQGDLkGYxouqzl43JyVgAAOw==" />
+      <img class="intLink" title="Numbered list" onclick="formatDoc('insertorderedlist');" src="data:image/gif;base64,R0lGODlhFgAWAMIGAAAAADljwliE35GjuaezxtHa7P///////yH5BAEAAAcALAAAAAAWABYAAAM2eLrc/jDKSespwjoRFvggCBUBoTFBeq6QIAysQnRHaEOzyaZ07Lu9lUBnC0UGQU1K52s6n5oEADs=" />
+      <img class="intLink" title="Dotted list" onclick="formatDoc('insertunorderedlist');" src="data:image/gif;base64,R0lGODlhFgAWAMIGAAAAAB1ChF9vj1iE33mOrqezxv///////yH5BAEAAAcALAAAAAAWABYAAAMyeLrc/jDKSesppNhGRlBAKIZRERBbqm6YtnbfMY7lud64UwiuKnigGQliQuWOyKQykgAAOw==" />
+      <img class="intLink" title="Quote" onclick="formatDoc('formatblock','blockquote');" src="data:image/gif;base64,R0lGODlhFgAWAIQXAC1NqjFRjkBgmT9nqUJnsk9xrFJ7u2R9qmKBt1iGzHmOrm6Sz4OXw3Odz4Cl2ZSnw6KxyqO306K63bG70bTB0rDI3bvI4P///////////////////////////////////yH5BAEKAB8ALAAAAAAWABYAAAVP4CeOZGmeaKqubEs2CekkErvEI1zZuOgYFlakECEZFi0GgTGKEBATFmJAVXweVOoKEQgABB9IQDCmrLpjETrQQlhHjINrTq/b7/i8fp8PAQA7" />
+      <img class="intLink" title="Delete indentation" onclick="formatDoc('outdent');" src="data:image/gif;base64,R0lGODlhFgAWAMIHAAAAADljwliE35GjuaezxtDV3NHa7P///yH5BAEAAAcALAAAAAAWABYAAAM2eLrc/jDKCQG9F2i7u8agQgyK1z2EIBil+TWqEMxhMczsYVJ3e4ahk+sFnAgtxSQDqWw6n5cEADs=" />
+      <img class="intLink" title="Add indentation" onclick="formatDoc('indent');" src="data:image/gif;base64,R0lGODlhFgAWAOMIAAAAADljwl9vj1iE35GjuaezxtDV3NHa7P///////////////////////////////yH5BAEAAAgALAAAAAAWABYAAAQ7EMlJq704650B/x8gemMpgugwHJNZXodKsO5oqUOgo5KhBwWESyMQsCRDHu9VOyk5TM9zSpFSr9gsJwIAOw==" />
+      <img class="intLink" title="Hyperlink" onclick="var sLnk=prompt('Write the URL here','http:\/\/');if(sLnk&&sLnk!=''&&sLnk!='http://'){formatDoc('createlink',sLnk)}" src="data:image/gif;base64,R0lGODlhFgAWAOMKAB1ChDRLY19vj3mOrpGjuaezxrCztb/I19Ha7Pv8/f///////////////////////yH5BAEKAA8ALAAAAAAWABYAAARY8MlJq7046827/2BYIQVhHg9pEgVGIklyDEUBy/RlE4FQF4dCj2AQXAiJQDCWQCAEBwIioEMQBgSAFhDAGghGi9XgHAhMNoSZgJkJei33UESv2+/4vD4TAQA7" />
+      <img class="intLink" title="Cut" onclick="formatDoc('cut');" src="data:image/gif;base64,R0lGODlhFgAWAIQSAB1ChBFNsRJTySJYwjljwkxwl19vj1dusYODhl6MnHmOrpqbmpGjuaezxrCztcDCxL/I18rL1P///////////////////////////////////////////////////////yH5BAEAAB8ALAAAAAAWABYAAAVu4CeOZGmeaKqubDs6TNnEbGNApNG0kbGMi5trwcA9GArXh+FAfBAw5UexUDAQESkRsfhJPwaH4YsEGAAJGisRGAQY7UCC9ZAXBB+74LGCRxIEHwAHdWooDgGJcwpxDisQBQRjIgkDCVlfmZqbmiEAOw==" />
+      <img class="intLink" title="Copy" onclick="formatDoc('copy');" src="data:image/gif;base64,R0lGODlhFgAWAIQcAB1ChBFNsTRLYyJYwjljwl9vj1iE31iGzF6MnHWX9HOdz5GjuYCl2YKl8ZOt4qezxqK63aK/9KPD+7DI3b/I17LM/MrL1MLY9NHa7OPs++bx/Pv8/f///////////////yH5BAEAAB8ALAAAAAAWABYAAAWG4CeOZGmeaKqubOum1SQ/kPVOW749BeVSus2CgrCxHptLBbOQxCSNCCaF1GUqwQbBd0JGJAyGJJiobE+LnCaDcXAaEoxhQACgNw0FQx9kP+wmaRgYFBQNeAoGihCAJQsCkJAKOhgXEw8BLQYciooHf5o7EA+kC40qBKkAAAGrpy+wsbKzIiEAOw==" />
+      <img class="intLink" title="Paste" onclick="formatDoc('paste');" src="data:image/gif;base64,R0lGODlhFgAWAIQUAD04KTRLY2tXQF9vj414WZWIbXmOrpqbmpGjudClFaezxsa0cb/I1+3YitHa7PrkIPHvbuPs+/fvrvv8/f///////////////////////////////////////////////yH5BAEAAB8ALAAAAAAWABYAAAWN4CeOZGmeaKqubGsusPvBSyFJjVDs6nJLB0khR4AkBCmfsCGBQAoCwjF5gwquVykSFbwZE+AwIBV0GhFog2EwIDchjwRiQo9E2Fx4XD5R+B0DDAEnBXBhBhN2DgwDAQFjJYVhCQYRfgoIDGiQJAWTCQMRiwwMfgicnVcAAAMOaK+bLAOrtLUyt7i5uiUhADs=" />
+    </div>
+    <div id="textBox" contenteditable="true"><p>Filler:Rip: Terry A Davis</p></div>
+    <p id="editMode"><input type="checkbox" name="switchMode" id="switchBox" onchange="setDocMode(this.checked);" /> <label for="switchBox">Convert To HTML SOURCE</label></p>
+  </form>
+</body>
+<style>
+  .intLink { cursor: pointer; }
+  img.intLink { border: 0; }
+  #toolBar1 select { font-size:10px; }
+  #textBox {
+    width: 540px;
+    height: 200px;
+    border: 1px #000000 solid;
+    padding: 12px;
+    overflow: scroll;
+  }
+  #textBox #sourceText {
+    padding: 0;
+    margin: 0;
+    min-width: 498px;
+    min-height: 200px;
+  }
+  #editMode label { cursor: pointer; }
+
+</style>
+<script>
+  var oDoc, sDefTxt;
+
+  function initDoc() {
+    oDoc = document.getElementById("textBox");
+    sDefTxt = oDoc.innerHTML;
+    if (document.compForm.switchMode.checked) { setDocMode(true); }
+  }
+
+  function formatDoc(sCmd, sValue) {
+    if (validateMode()) { document.execCommand(sCmd, false, sValue); oDoc.focus(); }
+  }
+
+  function validateMode() {
+    if (!document.compForm.switchMode.checked) { return true ; }
+    alert("Uncheck \"Show HTML\".");
+    oDoc.focus();
+    return false;
+  }
+
+  function setDocMode(bToSource) {
+    var oContent;
+    if (bToSource) {
+      oContent = document.createTextNode(oDoc.innerHTML);
+      oDoc.innerHTML = "";
+      var oPre = document.createElement("pre");
+      oDoc.contentEditable = false;
+      oPre.id = "sourceText";
+      oPre.contentEditable = true;
+      oPre.appendChild(oContent);
+      oDoc.appendChild(oPre);
+      document.execCommand("defaultParagraphSeparator", false, "p");
+    } else {
+      if (document.all) {
+        oDoc.innerHTML = oDoc.innerText;
+      } else {
+        oContent = document.createRange();
+        oContent.selectNodeContents(oDoc.firstChild);
+        oDoc.innerHTML = oContent.toString();
+      }
+      oDoc.contentEditable = true;
+    }
+    oDoc.focus();
+  }
+
+  function printDoc() {
+    if (!validateMode()) { return; }
+    var oPrntWin = window.open("","_blank","width=450,height=470,left=400,top=100,menubar=yes,toolbar=no,location=no,scrollbars=yes");
+    oPrntWin.document.open();
+    oPrntWin.document.write("<!doctype html><html><head><title>Print<\/title><\/head><body onload=\"print();\">" + oDoc.innerHTML + "<\/body><\/html>");
+    oPrntWin.document.close();
+  }
+</script>
+<body>
+  <p>Project Moon <a href="desktop.html"></a> "Desktop"</p>
+  <p>Command_Line <a href="experiment.html"></a> "Line_Command"</p>
+  <h5>Formatting Text Line / Calibration Text (h5) </h5>
+  <h4>Formatting Text Line / Calibration Text (h4) </h4>
+  <h3>Formatting Text Line / Calibration Text (h3) </h3>
+  <h2>Formatting Text Line / Calibration Text (h2) </h2>
+  <h1>Formatting Text Line / Calibration Text (h1) </h1>
+</body>
+<h1 class="center">Searchable Font Selector</h1>
+
+<div class="flex-row">
+
+  <div class="flex-col flex-center">
+    <p class="ds-form-label">Font Fanily</p>
+  </div>
+
+  <div class="flex-col flex-center">
+
+    <input type="hidden" value="Brush Script Std" id="divinestaroptions[font][font2]" name="divinestaroptions[font][font2]">
+    <div tabindex="0" class="dropdown">
+      <div class="ds-dropdown-items ">
+
+        <div tabindex="0" class="ds-options-dropdownsearch-currentselected" onclick="dropDownSearchClick(event,'divinestaroptions[font][font2]')">
+          <span id="divinestaroptions[font][font2]-dropdownsearch-currentselected">Brush Script....</span>
+        </div>
+
+        <div tabindex="0" id="divinestaroptions[font][font2]-dropdownsearch-clearcurrentselected" class="ds-options-dropdownsearch-clearselect">
+          <span onclick="dropDownSearchClearSelect(event,&quot;divinestaroptions[font][font2]&quot;)" class="ds-close-image"></span>
+        </div>
+
+        <div tabindex="0" id="divinestaroptions[font][font2]-dropdownsearch-dropdownbutton" class="ds-options-dropdownsearch-dropdownbutton">
+          <span onclick="dropDownSearchClick(event,&quot;divinestaroptions[font][font2]&quot;)" class="ds-arrowdown-image"></span>
+        </div>
+
+      </div>
+    </div>
+    <div id="divinestaroptions[font][font2]-dropdownsearch-dropdown" class="dropdown-content">
+      <input class="ds-options-dropdownsearch-searchinput" type="text" placeholder="Search.." id="divinestaroptions[font][font2]-dropdownsearch-searchinput" onkeyup="filterFunction('divinestaroptions[font][font2]')">
+      <div class="search-list-container">
+        <a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Andale Mono&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Andale Mono" style="display: block;">Andale Mono</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Apple Chancery&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Apple Chancery" style="display: block;">Apple Chancery</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Arial&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Arial" style="display: block;">Arial</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Arial Black&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Arial Black" style="display: block;">Arial Black</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Arial narrow&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Arial narrow" style="display: block;">Arial narrow</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Arial Rounded MT Bold&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Arial Rounded MT Bold" style="display: block;">Arial Rounded MT Bold</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Arnoldboecklin&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Arnoldboecklin" style="display: block;">Arnoldboecklin</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Baskerville&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Baskerville" style="display: block;">Baskerville</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Big Caslon&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Big Caslon" style="display: block;">Big Caslon</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Blippo&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Blippo" style="display: block;">Blippo</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Bodoni MT&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Bodoni MT" style="display: block;">Bodoni MT</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Book Antiqua&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Book Antiqua" style="display: block;">Book Antiqua</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Bookman&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Bookman" style="display: block;">Bookman</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Bradley Hand&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Bradley Hand" style="display: block;">Bradley Hand</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Brush Script MT&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Brush Script MT" style="display: block;">Brush Script MT</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Brush Script Std&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Brush Script Std" style="display: block;">Brush Script Std</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Brushstroke&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Brushstroke" style="display: block;">Brushstroke</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Calibri&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Calibri" style="display: block;">Calibri</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Calisto MT&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Calisto MT" style="display: block;">Calisto MT</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Cambria&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Cambria" style="display: block;">Cambria</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Candara&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Candara" style="display: block;">Candara</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Century Gothic&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Century Gothic" style="display: block;">Century Gothic</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Chalkduster&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Chalkduster" style="display: block;">Chalkduster</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Comic Sans&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Comic Sans" style="display: block;">Comic Sans</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Comic Sans MS&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Comic Sans MS" style="display: block;">Comic Sans MS</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Consolas&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Consolas" style="display: block;">Consolas</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Copperplate&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Copperplate" style="display: block;">Copperplate</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Coronet script&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Coronet script" style="display: block;">Coronet script</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Courier&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Courier" style="display: block;">Courier</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Courier New&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Courier New" style="display: block;">Courier New</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Didot&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Didot" style="display: block;">Didot</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Florence&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Florence" style="display: block;">Florence</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Franklin Gothic Medium&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Franklin Gothic Medium" style="display: block;">Franklin Gothic Medium</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Futara&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Futara" style="display: block;">Futara</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Garamond&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Garamond" style="display: block;">Garamond</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Georgia&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Georgia" style="display: block;">Georgia</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Gill Sans&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Gill Sans" style="display: block;">Gill Sans</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Goudy Old Style&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Goudy Old Style" style="display: block;">Goudy Old Style</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Helvetica&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Helvetica" style="display: block;">Helvetica</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Hoefler Text&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Hoefler Text" style="display: block;">Hoefler Text</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Impact&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Impact" style="display: block;">Impact</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Jazz LET&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Jazz LET" style="display: block;">Jazz LET</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Lucida Bright&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Lucida Bright" style="display: block;">Lucida Bright</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Lucida Console&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Lucida Console" style="display: block;">Lucida Console</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Lucida Sans&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Lucida Sans" style="display: block;">Lucida Sans</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Lucida Sans Typewriter&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Lucida Sans Typewriter" style="display: block;">Lucida Sans Typewriter</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Lucidatypewriter&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Lucidatypewriter" style="display: block;">Lucidatypewriter</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Luminari&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Luminari" style="display: block;">Luminari</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Marker Felt&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Marker Felt" style="display: block;">Marker Felt</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Monaco&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Monaco" style="display: block;">Monaco</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;New Century Schoolbook&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="New Century Schoolbook" style="display: block;">New Century Schoolbook</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Noto&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Noto" style="display: block;">Noto</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Oldtown&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Oldtown" style="display: block;">Oldtown</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Palatino&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Palatino" style="display: block;">Palatino</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;papyrus&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="papyrus" style="display: block;">papyrus</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Parkavenue&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Parkavenue" style="display: block;">Parkavenue</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Perpetua&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Perpetua" style="display: block;">Perpetua</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Rockwell&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Rockwell" style="display: block;">Rockwell</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Rockwell Extra Bold&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Rockwell Extra Bold" style="display: block;">Rockwell Extra Bold</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Snell Roundhan&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Snell Roundhan" style="display: block;">Snell Roundhan</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Stencil Std&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Stencil Std" style="display: block;">Stencil Std</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Times New Roman&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Times New Roman" style="display: block;">Times New Roman</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Trattatello&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Trattatello" style="display: block;">Trattatello</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Trebuchet MS&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Trebuchet MS" style="display: block;">Trebuchet MS</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;URW Chancery&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="URW Chancery" style="display: block;">URW Chancery</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Verdana&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Verdana" style="display: block;">Verdana</a><a tabindex="0" onclick="clieckedDropDownSearchOption(&quot;Zapf Chancery&quot;,&quot;divinestaroptions[font][font2]&quot;,updateFontDisplay)" class="ds-dropdown-search-item" data-value="Zapf Chancery" style="display: block;">Zapf Chancery</a> 
+    </div>
+      </div>
+      <div>
+      </div>
+
+    </div>
+
+  </div>
+  <br>
+  <div class='ds-options-font-display'>
+    <p style='font-family:"Arial" ' id='divinestaroptions[font][font2]-font-display'>1 2 3 4 5 6 7 8 9 0 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z</p>
+  </div>
+  <script>
+    function dropDownSearchClick(event,form) {
+      event.preventDefault();
+      var button = document.getElementById(form+"-dropdownsearch-dropdownbutton")
+      button.getElementsByTagName("span")[0].classList.toggle("ds-image-rotate");;
+      document.getElementById(form+"-dropdownsearch-dropdown").classList.toggle("show");
+    }
+
+    function filterFunction(form) {
+      var input, filter, ul, li, a, i;
+      input = document.getElementById(form+"-dropdownsearch-searchinput");
+      filter = input.value.toUpperCase();
+      div = document.getElementById(form+"-dropdownsearch-dropdown");
+      a = div.getElementsByTagName("a");
+      for (i = 0; i < a.length; i++) {
+        txtValue = a[i].textContent || a[i].innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          a[i].style.display = "";
+        } else {
+          a[i].style.display = "none";
+        }
+      }
+    }
+
+    function clieckedDropDownSearchOption(value,form,callback) {
+      var orgvalue = value;
+      if(value.length >= 16 ) {
+        var split = value.split(" ");
+        value = split[0] + " " + split[1] + ".....";
+        if(value.length >= 16 ) {
+          value = value.substring(0, 16);
+        }
+      }
+      document.getElementById(form+'-dropdownsearch-currentselected').innerText = value;
+      document.getElementById(form+'-dropdownsearch-searchinput').value = '';
+      document.getElementById(form).value = orgvalue;
+      div = document.getElementById(form+"-dropdownsearch-dropdown");
+      a = div.getElementsByTagName("a");
+      for (i = 0; i < a.length; i++) {
+        a[i].style.display = "block";
+      }
+
+      callback(value,form);
+    } 
+
+    function dropDownSearchClearSelect(event,form) {
+      event.preventDefault();
+      document.getElementById(form+'-dropdownsearch-currentselected').innerText = '';
+      document.getElementById(form+'-dropdownsearch-searchinput').value = '';
+      document.getElementById(form).value = '';
+      return;
+
+    }
+
+    function updateFontDisplay(value,form) {
+
+      document.getElementById(form+'-font-display').style.fontFamily = value;
+
+    }
+  </script>
+  <style>
+    .ds-form-label {
+
+      margin-right: 10px;
+    }
+    .center {
+      text-align: center;
+    }
+    .flex-center {
+      align-items: center;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+    .flex-row {
+      align-items: center;
+      margin-right: auto;
+
+      flex-wrap: nowrap;
+    }
+
+    .flex-col {
+      display: inline-flex;
+      flex-wrap: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ds-options-dropdownsearch-currentselected {
+      color: black;
+      width: 150px;
+      font-size: 14px;
+      border-radius: 5px;
+
+      cursor: pointer;
+    }
+    .ds-options-dropdownsearch-currentselected span{
+      padding: 0px;
+      position: absolute;
+      margin-top: -20px;
+    }
+    .ds-options-dropdownsearch-clearselect {
+      width: 15px;
+      height: 22px;
+    }
+    .ds-options-dropdownsearch-clearselect:hover {
+      cursor: pointer;
+    }
+    .ds-options-dropdownsearch-clearselect span.ds-close-image {
+      padding: 5px;
+      position: absolute;
+      margin-top: 5px;
+      margin-left: -5px;
+      background-image: url('https://lukejohnson.media/examples/icons/close_mini.svg');
+      background-repeat: no-repeat;
+      background-size: 10px 10px;
+    }
+
+
+    .ds-options-dropdownsearch-dropdownbutton {
+      padding: 0px;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      height: 25px;
+      width: 24px;
+      margin-left: 0px;
+      background-image: linear-gradient( #0071a1, #ccefff);
+    }
+    .ds-options-dropdownsearch-dropdownbutton span.ds-arrowdown-image.ds-image-rotate {
+      background-image: url('https://lukejohnson.media/examples/icons/arrow_up.svg');
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      position: absolute;
+      margin-top: 5px;
+      margin-left: 3px;
+    }
+    .ds-options-dropdownsearch-dropdownbutton:hover {
+      background-color:  #016087;
+      cursor: pointer;
+    }
+    .ds-options-dropdownsearch-dropdownbutton span.ds-arrowdown-image {
+      background-image: url('https://lukejohnson.media/examples/icons/arrow_down.svg');
+      padding: 15px;
+      background-repeat: no-repeat;
+      background-size: 15px 15px;
+      position: absolute;
+      margin-top: 5px;
+      margin-left: 3px;
+
+    }
+    .ds-options-dropdownsearch-searchinput {
+      background-image: url('https://lukejohnson.media/examples/icons/search.svg');
+      background-position: 170px 5px;
+      background-repeat: no-repeat;
+      background-size: 20px 20px;
+      font-size: 14px;
+      padding: 14px 2px 5px 2px;
+      border: none;
+      width: 198px;
+      height: 20px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    /*
+    .ds-options-dropdownsearch-searchinput:focus 
+    {outline: 3px solid #ddd;}
+    */
+    .dropdown {
+      width: 198px;
+      height: 25px;
+      border-radius: 5px;
+      border: 1px solid grey;
+
+      display: inline-flex;
+      flex-wrap: nowrap;
+    }
+    .dropdown:hover, .dropdown:focus {
+      background-color: #e6e6e6;
+
+    }
+    .dropdown-content {
+      text-align: left !important;
+      border-left: 1px solid grey;
+      border-right: 1px solid grey;
+      border-bottom: 1px solid grey;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      display: none;
+      position: absolute;
+      background-color: #f6f6f6;
+      width: 200px;
+
+      z-index: 900;
+      margin-top: 110px;
+
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 5px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    .dropdown-content.show {
+      display: block;
+    }
+    .search-list-container {
+
+      height: 150px;
+
+      overflow-y: scroll;
+    }
+    .ds-dropdown-items div {
+      display: inline-flex;
+      flex-wrap: nowrap;
+    }
+    .ds-dropdown-items div span {
+      display: inline-flex;
+      flex-wrap: nowrap;
+    }
+    .ds-options-font-display {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+
+      margin-top: 5px;
+      margin-bottom: 5px;
+      padding: 5px;
+      width: 350px;
+
+    }
+  </style>

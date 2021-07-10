@@ -134,7 +134,7 @@ loadwindow("http://www.google.com",600,400)
 </script>
 
 <!--Use below code to load DHTML window via link-->
-<a href="javascript:loadwindow('http://www.google.com',600,400)">Geocities</a>
+<a href="javascript:loadwindow('http://www.google.com',600,400)">ProjectMoon Desktop Launch</a>
 </body>
 </div>
 </html>

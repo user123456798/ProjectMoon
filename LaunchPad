@@ -40,6 +40,14 @@
 </div>
 <div class="wrap">
 <h1>LaunchPad Directory</h1>
+<button onclick="myFunction()">Try it</button>
 
+<script>
+function myFunction() {
+  document.open();
+  document.write("<iframe src="PM RESOURCES\PML-Iframe.html" height="500" width="500">);
+  document.close();
+}
+</script>
 </div>
 </html>

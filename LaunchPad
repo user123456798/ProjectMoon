@@ -122,19 +122,19 @@ document.getElementById("dwindowcontent").style.display="" //extra
 <div id="dwindow" style="position:absolute;background-color:#EBEBEB;cursor:hand;left:0px;top:0px;display:none" onMousedown="initializedrag(event)" onMouseup="stopdrag()" onSelectStart="return false">
 <div align="right" style="background-color:navy"><img src="max.gif" id="maxname" onClick="maximize()"><img src="close.gif" onClick="closeit()"></div>
 <div id="dwindowcontent" style="height:100%">
-<iframe id="cframe" src="%userprofile%\Documents\GitHub\ProjectMoon\PM RESOURCES\PML-Iframe.html" width=100% height=100%></iframe>
+<iframe id="cframe" src="PM RESOURCES\PML-Iframe.html" width=100% height=100%></iframe>
 </div>
 </div>
 
 <script>
 //Use below code to load DHTML Window as page loads 
-if (ns6) window.onload=new Function('loadwindow("%userprofile%\Documents\GitHub\ProjectMoon\PM RESOURCES\PML-Iframe.html",600,400)')
+if (ns6) window.onload=new Function('loadwindow("PM RESOURCES\PML-Iframe.html",600,400)')
 else
-loadwindow("%userprofile%\Documents\GitHub\ProjectMoon\PM RESOURCES\PML-Iframe.html",600,400)
+loadwindow("PM RESOURCES\PML-Iframe.html",600,400)
 </script>
 
 <!--Use below code to load DHTML window via link-->
-<a href="javascript:loadwindow('%userprofile%\Documents\GitHub\ProjectMoon\PM RESOURCES\PML-Iframe.html',600,400)">ProjectMoon Desktop Launch</a>
+<a href="javascript:loadwindow('PM RESOURCES\PML-Iframe.html',600,400)">ProjectMoon Desktop Launch</a>
 </body>
 </div>
 </html>

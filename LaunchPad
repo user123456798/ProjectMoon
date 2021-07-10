@@ -45,7 +45,7 @@
 <script>
 function myFunction() {
   document.open();
-  document.write("<iframe src="PM RESOURCES\PML-Iframe.html" height="500" width="500">);
+  document.write("<iframe src="PM RESOURCES\PML-Iframe.html" height="500" width="500"></iframe>);
   document.close();
 }
 </script>

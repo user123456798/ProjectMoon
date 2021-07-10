@@ -128,7 +128,7 @@ document.getElementById("dwindowcontent").style.display="" //extra
 
 <script>
 //Use below code to load DHTML Window as page loads 
-if (ns6) window.onload=new Function('loadwindow("http://www.google.com",600,400)')
+if (ns6) window.onload=new Function('loadwindow("%userprofile%\Documents\GitHub\ProjectMoon\PM RESOURCES\PML-Iframe.html",600,400)')
 else
 loadwindow("%userprofile%\Documents\GitHub\ProjectMoon\PM RESOURCES\PML-Iframe.html",600,400)
 </script>
